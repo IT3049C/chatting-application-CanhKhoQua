@@ -35,9 +35,9 @@ function formatMessage(message, senderName) {
   }
 }
 
-function fetchMessages() {
-  return fetch(serverURL)
-    .then(response => response.json());
+async function fetchMessages() {
+  const response = await fetch(serverURL);
+  return await response.json();
 }
 
 async function updateMessagesInChatBox()
@@ -56,8 +56,7 @@ async function updateMessagesInChatBox()
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-
-function sendMessages(name,message)
+async function sendMessages(name,message)
 {
   const newMessage =
   {
@@ -66,7 +65,7 @@ function sendMessages(name,message)
     timestamp: new Date()
   };
 
-  fetch(serverURL, {
+  await fetch(serverURL, {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'
@@ -76,12 +75,12 @@ function sendMessages(name,message)
   updateMessagesInChatBox();
 }
 
-sendButton.addEventListener(`click`, function (e) 
+sendButton.addEventListener(`click`, async function (e) 
 {
   e.preventDefault();
   const name = nameInput.value;
   const message = messageInput.value;
-  sendMessages(name,message);
+  await sendMessages(name,message);
   //Clear message text field
   messageInput.value = "";
 })
